@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { FiPrinter, FiX } from 'react-icons/fi';
 
 const Receipt = ({ receipt, closeReceipt }) => {
@@ -148,8 +149,13 @@ const Receipt = ({ receipt, closeReceipt }) => {
 
             {/* =====================================
                 PRINT INVOICE
+                Portalled to document.body so it is a direct child of <body>.
+                This means position:absolute is relative to the document root,
+                not to any scrolled/transformed modal ancestor — preventing the
+                blank second page that occurs when the invoice is inside a modal.
             ====================================== */}
-            <div id="print-invoice">
+            {createPortal(
+                <div id="print-invoice">
 
 
                 {/* =========================
@@ -395,7 +401,9 @@ const Receipt = ({ receipt, closeReceipt }) => {
 
                 </div>
 
-            </div>
+            </div>,
+            document.body
+            )}
 
         </>
     );

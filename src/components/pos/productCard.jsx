@@ -1,16 +1,22 @@
 import React from 'react';
 import { FiBox } from 'react-icons/fi';
+import API_URL from '../../config';
 
 const ProductCard = ({ product, addToCart }) => {
   
   return (
     <div className="rounded-xl border border-[var(--border-color)] bg-[var(--card-bg)] p-4">
 
-      <div className="mb-4 flex h-32 items-center justify-center rounded-lg bg-[var(--input-bg)]">
-        <FiBox
-          size={40}
-          className="text-[var(--muted-color)]"
-        />
+      <div className="mb-4 flex h-32 items-center justify-center overflow-hidden rounded-lg bg-[var(--input-bg)]">
+        {product.image ? (
+          <img
+            src={`${API_URL}/${product.image.replace(/^\/+/, '')}`}
+            alt={product.name}
+            className="h-full w-full object-contain p-2"
+          />
+        ) : (
+          <FiBox size={40} className="text-[var(--muted-color)]" />
+        )}
       </div>
 
       <p className="text-sm text-[var(--muted-color)]">

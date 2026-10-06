@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(
     () => localStorage.getItem('theme') || 'dark'
   );
+
+  // Apply the saved theme on initial mount so a page refresh keeps the
+  // user's preference without waiting for an interaction.
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, []);
 
   function toggleTheme() {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';

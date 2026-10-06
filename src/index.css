@@ -72,55 +72,35 @@ body {
     margin: 14mm;
   }
 
-
   html,
   body {
     margin: 0 !important;
     padding: 0 !important;
-
     background: #ffffff !important;
   }
 
-
   /* Hide whole website */
-
   body * {
     visibility: hidden !important;
   }
 
-
   /* Show only invoice */
-
   #print-invoice,
   #print-invoice * {
     visibility: visible !important;
   }
 
-
   #print-invoice {
     display: block !important;
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-
     background: #ffffff !important;
-
     color: #111827 !important;
-
-    font-family:
-      Arial,
-      Helvetica,
-      sans-serif;
-
-    page-break-inside: avoid;
-
+    font-family: Arial, Helvetica, sans-serif;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }

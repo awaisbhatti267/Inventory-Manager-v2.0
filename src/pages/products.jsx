@@ -11,6 +11,10 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Search + category filter state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [category, setCategory] = useState('all');
+
   async function fetchProducts() {
     setError('');
 
@@ -66,6 +70,17 @@ const Product = () => {
     fetchProducts();
   }
 
+  // Apply search + category filter
+  const filteredProducts = products.filter((p) => {
+    const matchesCategory =
+      category === 'all' || p.category.toLowerCase() === category.toLowerCase();
+    const matchesSearch =
+      !searchTerm.trim() ||
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.category.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className="text-[var(--text-color)]">
       <div className="mb-6 mt-1 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -84,7 +99,14 @@ const Product = () => {
           + Add Product
         </button>
       </div>
-          <div className='mb-3'><ProductSearch /></div>
+          <div className="mb-3">
+            <ProductSearch
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              category={category}
+              setCategory={setCategory}
+            />
+          </div>
 
       <section className="overflow-hidden rounded-xl border border-[var(--border-color)] bg-[var(--surface-bg)]">
         <div className="overflow-auto">
@@ -116,17 +138,17 @@ const Product = () => {
                     {error}
                   </td>
                 </tr>
-              ) : products.length === 0 ? (
+              ) : filteredProducts.length === 0 ? (
                 <tr>
                   <td
                     colSpan={6}
                     className="p-6 text-center text-[var(--muted-color)]"
                   >
-                    No products added yet.
+                    {products.length === 0 ? 'No products added yet.' : 'No products match your search.'}
                   </td>
                 </tr>
               ) : (
-                products.map((product) => {
+                filteredProducts.map((product) => {
                   const stock = Number(product.stock);
 
                   const statusStyle =

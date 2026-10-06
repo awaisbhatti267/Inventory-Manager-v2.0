@@ -61,9 +61,27 @@ async function setupDatabase() {
             price DECIMAL(10,2) NOT NULL,
             quantity INT NOT NULL
         )
-        `)
+        `);
 
-    console.log("Database and users , product table ready")
+    // Add 'returned' column to sales if it doesn't exist yet.
+    // Using ALTER TABLE ... IF NOT EXISTS is not supported in all MySQL versions,
+    // so we check the information_schema first.
+    const [cols] = await db.query(`
+        SELECT COLUMN_NAME
+        FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME   = 'sales'
+          AND COLUMN_NAME  = 'returned'
+    `);
+
+    if (cols.length === 0) {
+        await db.query(`
+            ALTER TABLE sales
+            ADD COLUMN returned TINYINT(1) NOT NULL DEFAULT 0
+        `);
+    }
+
+    console.log("Database and tables ready")
 }
 
 module.exports = { db, setupDatabase }

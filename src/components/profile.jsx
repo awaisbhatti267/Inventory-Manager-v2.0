@@ -34,7 +34,9 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch(`${API_URL}/profile/${userId}`);
+        const response = await fetch(`${API_URL}/profile/${userId}`, {
+          headers: { 'x-user-id': userId },
+        });
         const data = await response.json();
 
         if (!response.ok) {
